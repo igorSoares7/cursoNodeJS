@@ -1,0 +1,26 @@
+{
+  "name": "aula-nodejs",
+  "version": "1.0.0",
+  "description": "projeto de exemplo",
+  "main": "index.js",
+  "type":"module",
+  "scripts": {
+    "start": "npm run executa",
+    "executa": "node index.js --nome=Igor --curso=GTI",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs",
+    "teste",
+    "exemplo",
+    "aula"
+  ],
+  "author": "Soares, Igor",
+  "license": "ISC",
+  "dependencies": {
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "dot-env": "^0.0.1"
+  }
+}
