@@ -1,0 +1,1 @@
+console.log("Executando TS com Node")
