@@ -6,8 +6,10 @@
   "type":"module",
   "scripts": {
     "start": "npm run executa",
-    "executa": "node index.js --nome=Igor --curso=GTI",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "executa": "node exercicio-2.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "list":"node exercicio-2.js --operation=list",
+    "add":"node exercicio-2.js --operation=add"
   },
   "keywords": [
     "nodejs",
