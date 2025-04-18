@@ -27,6 +27,8 @@ const server = http.createServer((req, res) => {
     `)
     } else if (req.url === '/contato'){
         res.end("Seção de Contato")
+    } else {
+      res.end("Pagina nao encontrada")
     }
 });
 
