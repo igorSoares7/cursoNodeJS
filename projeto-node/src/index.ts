@@ -1,70 +1,69 @@
 import express, { Request, Response } from "express";
+import { parse } from "path";
 
 const app = express();
+//habilita a leitura de dados em JSON no Post
+app.use(express.json());
+//habilita a leitura de dados vindos em um formulario via POST
+app.use(express.urlencoded({ extended: true}))
 const port = 3030;
 
 app.get('/', (req: Request, res:Response):void  => {
     res.send('Hello world with Express usando TS!');
 });
 
-app.get("/json", (req: Request, res: Response): void => {
-    const aluno = {
-        nome: "Igor",
-        dt_nascimento: "06-11-1995",
-    };
-    res.status(301).json(aluno)
+app.get("/clientes", (req:Request, res:Response):void => {
+    console.log(req.query)
+    const {nome, idade} = req.query as {nome: string, idade: string}
 
+    res.send(`Meu cliente: ${nome}, idade: ${parseInt(idade)}`)
 });
 
-app.get("/pdf", (req: Request, res: Response): void => {
-    res.contentType("application/pdf")
-    res.send("Aqui seria um PDF!")
-})
+app.get("/clientes/:id", (req:Request, res:Response):void => {
+    console.log(req.params)
 
-app.get("/xml", (req: Request, res: Response): void => {
-    res.contentType("application/xml")
-    const xml = `<note>
-    <to>Tove</to>
-    <from>Jani</from>
-    <heading>Reminder</heading>
-    <body>Don't forget me this weekend!</body>
-    </note>`;
-    res.send(xml)
-})
-
-app.get('/clientes', (req:Request, res:Response):void => {
-    res.send("Rota de Clientes");
+    const {id} = req.params as {id:string}
+    res.send(`Clientes com parâmetro - ID ${id}`)
 });
 
-app.get('/soma', (req:Request, res:Response):void => {
-    const n1 = 10
-    const n2 = 20
-    const n3 = 1
-    const op = n1 + n2 + n3
-    res.send(`A soma dos números é ${op}`)
-    //content-type é json se for só OP, e text/html se for do jeito q está
-    
+//Tratando os dados vindos via POST
+app.post("/clientes", (req: Request, res:Response):void => {
+    const { nome , idade, genero} = req.body as { nome: string; idade: string, genero: string}
+    let mensagem = '';
+
+    if (parseInt(idade) >= 18) {
+        mensagem = 'Já pode ter habilitação'
+    } else {
+        mensagem = 'Não pode ter CNH'
+    }
+
+    res.send(`POST CLIENTES: ${nome}, ${idade} - ${mensagem}, genero = ${genero}`)
 });
 
-app.get("/horario", (req:Request, res:Response):void => {
-    res.contentType("text/html")
-    const currentDate = new Date ()
-    const hours = currentDate.getHours()
-    const minutes = currentDate.getMinutes()
-    const seconds = currentDate.getSeconds()
-    const isEven = seconds % 2 === 0;
-    const evenOdd = isEven ? 'par' : 'ímpar'
-    const color = isEven? 'blue' : 'red'
-    
-
-    res.send(`
-        <!DOCTYPE html>
-      <html lang="pt-BR">
-        <head>
-        </head>
-        <body>
-        <span>${hours}:${minutes}:<span style="color: ${color}">${seconds}</span> => é ${evenOdd}</span>
-      `)
+app.post("/calculadora", (req:Request, res:Response):void => {
+    const {numero1, numero2, operacao} = req.body as {numero1:string, numero2:string, operacao:string}
+    const num1 = parseInt(numero1);
+    const num2 = parseInt(numero2);
+    let resultado;
+    switch (operacao) {
+        case "+":
+            resultado = num1 + num2;
+            break;
+        case "-":
+            resultado = num1 - num2;
+            break;
+        case "*":
+            resultado = num1 * num2;
+            break;
+        case "/":
+            resultado = num1 / num2;
+            break;
+        default:
+            resultado = "Operação inválida"
+    }
+    res.json({
+        "resultado":resultado
+    })
 })
 
 app.listen(port, () => {
