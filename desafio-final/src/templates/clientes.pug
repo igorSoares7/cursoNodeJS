@@ -1,0 +1,14 @@
+extends layout 
+
+block content
+    h1 Listagem Clientes
+    table 
+        thead 
+            tr 
+                th ID 
+                th Cliente
+        each cliente, index in clientes
+            tbody 
+                tr 
+                    td=index+1
+                    td=cliente
